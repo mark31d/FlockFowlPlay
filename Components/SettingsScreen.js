@@ -11,6 +11,7 @@ import {
   Image,
   Dimensions,
   FlatList,
+  Alert
 } from 'react-native';
 import { usePlaylist } from '../Components/PlaylistContext';
 import AudioPlayer from './AudioPlayerTrack';
@@ -25,7 +26,9 @@ export default function SettingsScreen() {
   const [showPlaylist, setShowPlaylist]             = useState(false);
 
   const { playlist, removeFromPlaylist } = usePlaylist();
-
+  const openLink = (title, url) => {
+    Alert.alert(title, `Open: ${url}`);
+  };
   return (
     <View style={styles.container}>
       {/* Header */}
@@ -99,18 +102,28 @@ export default function SettingsScreen() {
           </View>
 
           {/* Здесь можно добавить остальные пункты Settings */}
-          <View style={styles.item}>
+          <TouchableOpacity
+            style={styles.item}
+            onPress={() => openLink('Privacy policy', 'https://example.com/privacy')}
+          >
             <Text style={styles.itemText}>Privacy policy</Text>
             <Text style={styles.arrow}>›</Text>
-          </View>
-          <View style={styles.item}>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.item}
+            onPress={() => openLink('Terms of use', 'https://example.com/terms')}
+          >
             <Text style={styles.itemText}>Terms of use</Text>
             <Text style={styles.arrow}>›</Text>
-          </View>
-          <View style={styles.item}>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.item}
+            onPress={() => openLink('About Developer', 'https://example.com/about')}
+          >
             <Text style={styles.itemText}>About Developer</Text>
             <Text style={styles.arrow}>›</Text>
-          </View>
+          </TouchableOpacity>
 
           <Image source={MIRA} style={styles.miraImage} />
         </View>
