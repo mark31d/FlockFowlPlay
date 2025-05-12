@@ -18,6 +18,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { launchImageLibrary } from 'react-native-image-picker';
 
+
 const { width } = Dimensions.get('window');
 
 const INITIAL_ENTRIES = [
