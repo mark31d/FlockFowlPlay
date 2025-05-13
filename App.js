@@ -16,6 +16,7 @@ import MiniGameScreen     from './Components/MiniGameScreen';
 import SettingsScreen     from './Components/SettingsScreen';
 import CustomTabBar       from './Components/CustomTabBar';
 import { PlaylistProvider } from './Components/PlaylistContext';
+import { CollectionProvider } from './Components/CollectionContext';
 /* ---------- навигация --------------- */
 const Stack = createStackNavigator();
 const Tab   = createBottomTabNavigator();
@@ -40,8 +41,10 @@ export default function App() {
   const [loaderEnded, setLoaderEnded] = useState(false);
 
   return (
+    
     <PlaylistProvider>
     <BirdProvider>
+    <CollectionProvider>
       <NavigationContainer>
         {!loaderEnded ? (
           <Loader onEnd={() => setLoaderEnded(true)} />
@@ -52,6 +55,7 @@ export default function App() {
           </Stack.Navigator>
         )}
       </NavigationContainer>
+      </CollectionProvider>
     </BirdProvider>
     </PlaylistProvider>
   );

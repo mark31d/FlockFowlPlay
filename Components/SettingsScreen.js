@@ -1,5 +1,4 @@
 // src/screens/SettingsScreen.js
-
 import React, { useState } from 'react';
 import {
   SafeAreaView,
@@ -11,24 +10,28 @@ import {
   Image,
   Dimensions,
   FlatList,
-  Alert
+  Alert,
 } from 'react-native';
 import { usePlaylist } from '../Components/PlaylistContext';
 import AudioPlayer from './AudioPlayerTrack';
 
 const { width } = Dimensions.get('window');
-
-// Статика
-const MIRA = require('../assets/chicken.png');
+const MIRA = require('../assets/chicken.png');   // персонаж-курка
 
 export default function SettingsScreen() {
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
-  const [showPlaylist, setShowPlaylist]             = useState(false);
+  const [showPlaylist, setShowPlaylist] = useState(false);
 
   const { playlist, removeFromPlaylist } = usePlaylist();
-  const openLink = (title, url) => {
-    Alert.alert(title, `Open: ${url}`);
+
+  /* ——— замість відкриття лінка показуємо “Coming soon” ——— */
+  const openLink = (title) => {
+    Alert.alert(
+      'Coming soon',
+      `${title} will be available in one of the next updates.`
+    );
   };
+
   return (
     <View style={styles.container}>
       {/* Header */}
@@ -55,7 +58,6 @@ export default function SettingsScreen() {
               <View style={styles.bubbleArrow} />
             </View>
             <Image source={MIRA} style={styles.miraEmpty} />
-            
           </View>
         ) : (
           <FlatList
@@ -93,25 +95,23 @@ export default function SettingsScreen() {
             <Text style={styles.itemText}>Notifications</Text>
             <Switch
               value={notificationsEnabled}
-              onValueChange={() =>
-                setNotificationsEnabled(v => !v)
-              }
+              onValueChange={() => setNotificationsEnabled(v => !v)}
               trackColor={{ true: '#D94651', false: '#767577' }}
               thumbColor="#FFF"
             />
           </View>
 
-          {/* Здесь можно добавить остальные пункты Settings */}
           <TouchableOpacity
             style={styles.item}
-            onPress={() => openLink('Privacy policy', 'https://example.com/privacy')}
+            onPress={() => openLink('Privacy policy')}
           >
             <Text style={styles.itemText}>Privacy policy</Text>
             <Text style={styles.arrow}>›</Text>
           </TouchableOpacity>
+
           <TouchableOpacity
             style={styles.item}
-            onPress={() => openLink('Terms of use', 'https://example.com/terms')}
+            onPress={() => openLink('Terms of use')}
           >
             <Text style={styles.itemText}>Terms of use</Text>
             <Text style={styles.arrow}>›</Text>
@@ -119,7 +119,7 @@ export default function SettingsScreen() {
 
           <TouchableOpacity
             style={styles.item}
-            onPress={() => openLink('About Developer', 'https://example.com/about')}
+            onPress={() => openLink('About Developer')}
           >
             <Text style={styles.itemText}>About Developer</Text>
             <Text style={styles.arrow}>›</Text>
@@ -132,12 +132,10 @@ export default function SettingsScreen() {
   );
 }
 
+/* ─── STYLES ───────────────────────────────────────────── */
 const styles = StyleSheet.create({
-  // Общие
-  container: {
-    flex: 1,
-    backgroundColor: '#000000',
-  },
+  container: { flex: 1, backgroundColor: '#000000' },
+
   header: {
     backgroundColor: '#1E1E1E',
     paddingTop: 16,
@@ -146,24 +144,15 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
-  title: {
-    color: '#FFFFFF',
-    fontSize: 28,
-    fontWeight: '700',
-  },
+  title: { color: '#FFFFFF', fontSize: 28, fontWeight: '700' },
   backArrow: {
-    marginTop:10,
+    marginTop: 10,
     color: '#E4D408',
     fontSize: 18,
   },
 
-  // Settings
-  body: {
-    flex: 1,
-    justifyContent: 'space-between',
-    paddingTop: 24,
-    paddingHorizontal: 16,
-  },
+  /* body + items */
+  body: { flex: 1, justifyContent: 'space-between', paddingTop: 24, paddingHorizontal: 16 },
   item: {
     backgroundColor: '#1E1E1E',
     borderRadius: 16,
@@ -174,96 +163,38 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     marginBottom: 12,
   },
-  itemText: {
-    color: '#FFFFFF',
-    fontSize: 16,
+  itemText: { color: '#FFFFFF', fontSize: 16 },
+  arrow: { color: '#FFFFFF', fontSize: 20 },
+
+  /* empty playlist */
+  emptyContainer: { flex: 1, alignItems: 'center', justifyContent: 'center' },
+  bubbleContainer: { alignItems: 'center', marginBottom: 8 },
+  bubble: { backgroundColor: '#FFFFFF', padding: 12, borderRadius: 16, maxWidth: width * 0.8 },
+  bubbleText: { color: '#000000', fontSize: 14, textAlign: 'center' },
+  bubbleArrow: {
+    width: 0, height: 0,
+    borderLeftWidth: 8, borderRightWidth: 8, borderTopWidth: 8,
+    borderLeftColor: 'transparent', borderRightColor: 'transparent', borderTopColor: '#FFFFFF',
+    marginTop: -2,
   },
-  arrow: {
-    color: '#FFFFFF',
-    fontSize: 20,
-  },
+  miraEmpty: { width: 180, height: 180, resizeMode: 'contain' },
+
+  /* playlist list */
+  playlistItem: { flexDirection: 'row', alignItems: 'center', marginBottom: 16 },
+  trackImage: { width: 64, height: 64, borderRadius: 8, backgroundColor: '#333' },
+  trackInfo: { flex: 1, marginLeft: 12 },
+  trackTitle: { color: '#FFFFFF', fontSize: 16, marginBottom: 8 },
+  removeBtn: { marginLeft: 12 },
+  removeTxt: { color: '#DDD', fontSize: 18 },
+
+  /* bottom character */
   miraImage: {
     width: width * 0.7,
     height: width * 0.7,
     resizeMode: 'contain',
     alignSelf: 'center',
     marginBottom: 8,
-    left:110,
-    top:-30,
-  },
-
-  // Forest playlist
-  emptyContainer: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  bubbleContainer: {
-    alignItems: 'center',
-    marginBottom: 8,
-  },
-  bubble: {
-    backgroundColor: '#FFFFFF',
-    padding: 12,
-    borderRadius: 16,
-    maxWidth: width * 0.8,
-  },
-  bubbleText: {
-    color: '#000000',
-    fontSize: 14,
-    textAlign: 'center',
-  },
-  bubbleArrow: {
-    width: 0,
-    height: 0,
-    borderLeftWidth: 8,
-    borderRightWidth: 8,
-    borderTopWidth: 8,
-    borderLeftColor: 'transparent',
-    borderRightColor: 'transparent',
-    borderTopColor: '#FFFFFF',
-    marginTop: -2,
-  },
-  miraEmpty: {
-    width: 180,
-    height: 180,
-    resizeMode: 'contain',
-  },
-  miraLabel: {
-    position: 'absolute',
-    bottom: 20,
-    color: '#FFFFFF',
-    fontSize: 12,
-    backgroundColor: 'rgba(0,0,0,0.6)',
-    paddingHorizontal: 6,
-    paddingVertical: 2,
-    borderRadius: 4,
-  },
-  playlistItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 16,
-  },
-  trackImage: {
-    width: 64,
-    height: 64,
-    borderRadius: 8,
-    backgroundColor: '#333333',
-  },
-  trackInfo: {
-    flex: 1,
-    marginLeft: 12,
-  },
-  trackTitle: {
-    color: '#FFFFFF',
-    fontSize: 16,
-    marginBottom: 8,
-  },
-  removeBtn: {
-    marginLeft: 12,
-  },
-  removeTxt: {
-    color: '#DDD',
-    fontSize: 18,
+    left: 110,
+    top: -30,
   },
 });

@@ -17,10 +17,10 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { launchImageLibrary } from 'react-native-image-picker';
-
+import { useCollection } from '../Components/CollectionContext'; 
 
 const { width } = Dimensions.get('window');
-
+const TXT = '#FFFFFF';
 const INITIAL_ENTRIES = [
   {
     id: '1',
@@ -48,6 +48,7 @@ const SEASONS = ['winter','spring','summer','autumn'];
 const TAGS    = ['first appearance','reappearance','surprise encounter'];
 
 export default function JournalScreen() {
+  const { collectRandomFeather } = useCollection();
   const [items, setItems]         = useState(INITIAL_ENTRIES);
   const [filterSeason, setFS]     = useState(null);
   const [filterSheet, setFSheet]  = useState(false);
@@ -115,9 +116,10 @@ export default function JournalScreen() {
       photo: photo || require('../assets/birds.png'),
     };
     if (formMode === 'edit') {
-      setItems(items.map(i => i.id === editingId ? newEntry : i));
-    } else {
-      setItems([newEntry, ...items]);
+          setItems(items.map(i => i.id === editingId ? newEntry : i));
+        } else {
+          setItems([newEntry, ...items]);
+          collectRandomFeather(); 
     }
     setFormMode(null);
   }
@@ -411,7 +413,7 @@ renderItem={({item})=>(
   );
 }
 
-const BG='#262628', TXT='#FFFFFF', DIV='#373737', YEL='#E4D408';
+const BG='#262628', DIV='#373737', YEL='#E4D408';
 const st = StyleSheet.create({
   card: {
     flexDirection: 'row',
